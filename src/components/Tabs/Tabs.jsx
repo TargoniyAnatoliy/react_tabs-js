@@ -1,9 +1,5 @@
 export const Tabs = ({ tabs, activeTabId, onTabSelected }) => {
-  const selectedTabId = tabs.some(tab => tab.id === activeTabId)
-    ? activeTabId
-    : tabs[0].id;
-
-  const activeTab = tabs.find(tab => tab.id === activeTabId);
+  const activeTab = tabs.find(tab => tab.id === activeTabId) ?? tabs[0];
 
   return (
     <div data-cy="TabsComponent">
@@ -11,12 +7,13 @@ export const Tabs = ({ tabs, activeTabId, onTabSelected }) => {
         <ul>
           {tabs.map(tab => (
             <li
-              className={tab.id === selectedTabId ? 'is-active' : ''}
+              key={tab.id}
+              className={tab.id === activeTab.id ? 'is-active' : ''}
               data-cy="Tab"
             >
               <a
                 onClick={
-                  tab.id !== selectedTabId
+                  tab.id !== activeTab.id
                     ? () => onTabSelected(tab.id)
                     : undefined
                 }
